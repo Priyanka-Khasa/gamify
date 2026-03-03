@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gameify | Play Everything</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <nav class="topbar">
+          <div class="brand">
+            <span class="brand-mark">G</span>
+            <div>
+              <p>Gameify</p>
+              <span>All game ideas, one bold hub</span>
+            </div>
+          </div>
+          <a class="ghost-link" href="#catalog">Explore games</a>
+        </nav>
+
+        <section class="hero-content">
+          <div class="hero-copy">
+            <p class="eyebrow">Game Project Collection</p>
+            <h1>Build a world-class library of games with one sharp interface.</h1>
+            <p class="hero-text">
+              A visually rich launchpad for arcade hits, strategy experiments,
+              racing concepts, puzzles, multiplayer ideas, and everything in between.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-btn" href="#catalog">Start browsing</a>
+              <a class="secondary-btn" href="#blueprints">See blueprints</a>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <div class="panel-card">
+              <p>Featured Stack</p>
+              <strong>Arcade + Story + PvP + Casual</strong>
+              <span>Designed as a scalable collection, not a single game page.</span>
+            </div>
+            <div class="stats-grid">
+              <article>
+                <strong>24</strong>
+                <span>Game concepts</span>
+              </article>
+              <article>
+                <strong>8</strong>
+                <span>Genres</span>
+              </article>
+              <article>
+                <strong>4</strong>
+                <span>Play modes</span>
+              </article>
+              <article>
+                <strong>∞</strong>
+                <span>Expansion room</span>
+              </article>
+            </div>
+          </div>
+        </section>
+      </header>
+
+      <main>
+        <section class="section" id="catalog">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Catalog</p>
+              <h2>Discover the collection</h2>
+            </div>
+            <input id="searchInput" type="search" placeholder="Search by name or vibe" />
+          </div>
+          <div class="filter-row" id="filterRow"></div>
+          <div class="game-grid" id="gameGrid"></div>
+        </section>
+
+        <section class="section blueprint-section" id="blueprints">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">Blueprints</p>
+              <h2>Three strong directions to grow this project</h2>
+            </div>
+          </div>
+          <div class="blueprint-grid">
+            <article>
+              <span>01</span>
+              <h3>Playable minis</h3>
+              <p>
+                Turn each card into a launch point for a playable browser game like Snake,
+                Tic-Tac-Toe, Memory, or Breakout.
+              </p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>User profiles</h3>
+              <p>
+                Add favorites, play history, leaderboards, and saved progress to make the
+                collection feel like a platform.
+              </p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Admin curation</h3>
+              <p>
+                Connect a backend or CMS so new games, categories, and banners can be added
+                without changing code.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+  </html>
