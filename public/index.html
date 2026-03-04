@@ -36,7 +36,7 @@
             </p>
             <div class="hero-actions">
               <a class="primary-btn" href="#catalog">Start browsing</a>
-              <a class="secondary-btn" href="#blueprints">See blueprints</a>
+              <a class="secondary-btn" href="#playground">Play the first game</a>
             </div>
           </div>
 
@@ -60,7 +60,7 @@
                 <span>Play modes</span>
               </article>
               <article>
-                <strong>∞</strong>
+                <strong>&infin;</strong>
                 <span>Expansion room</span>
               </article>
             </div>
@@ -79,6 +79,44 @@
           </div>
           <div class="filter-row" id="filterRow"></div>
           <div class="game-grid" id="gameGrid"></div>
+        </section>
+
+        <section class="section play-section" id="playground">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">Playground</p>
+              <h2>Start with Tic-Tac-Toe</h2>
+            </div>
+          </div>
+          <div class="play-layout">
+            <article class="play-intro">
+              <span class="play-label">First playable game</span>
+              <h3>Classic rules, sharper presentation.</h3>
+              <p>
+                Two players alternate turns on the same screen. The first player to make
+                three in a row wins. If the board fills up, the round ends in a draw.
+              </p>
+              <ul class="play-rules">
+                <li>Player X starts each new round.</li>
+                <li>Click any empty tile to place your mark.</li>
+                <li>Use reset to start a fresh match instantly.</li>
+              </ul>
+            </article>
+
+            <article class="ttt-panel">
+              <div class="ttt-status-wrap">
+                <p class="ttt-kicker">Now playing</p>
+                <h3>Tic-Tac-Toe</h3>
+                <p class="ttt-status" id="tttStatus">Player X turn</p>
+              </div>
+              <div class="ttt-board" id="tttBoard" aria-label="Tic-Tac-Toe board"></div>
+              <div class="ttt-actions">
+                <button class="primary-btn ttt-reset" id="tttReset" type="button">
+                  Reset game
+                </button>
+              </div>
+            </article>
+          </div>
         </section>
 
         <section class="section blueprint-section" id="blueprints">
@@ -120,4 +158,4 @@
 
     <script src="./app.js"></script>
   </body>
-  </html>
+</html>

@@ -21,11 +21,11 @@ const games = [
     description: "Fast arcade combat with wave survival, boss fights, and local team play."
   },
   {
-    name: "Mystic Tiles",
+    name: "Tic-Tac-Toe",
     genre: "Puzzle",
-    mode: "Solo",
-    vibe: "calm logic patterns",
-    description: "A polished tile-matching brain game built around combos and elegant visual feedback."
+    mode: "Versus",
+    vibe: "classic grid quick",
+    description: "The first playable game in the collection. Simple rules, instant rounds, sharp presentation."
   },
   {
     name: "Street Clash Arena",
@@ -85,12 +85,29 @@ const games = [
   }
 ];
 
+const winningLines = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
+
 const filters = ["All", ...new Set(games.map((game) => game.genre))];
 const gameGrid = document.getElementById("gameGrid");
 const filterRow = document.getElementById("filterRow");
 const searchInput = document.getElementById("searchInput");
+const tttBoard = document.getElementById("tttBoard");
+const tttStatus = document.getElementById("tttStatus");
+const tttReset = document.getElementById("tttReset");
 
 let activeFilter = "All";
+let boardState = Array(9).fill("");
+let currentPlayer = "X";
+let winner = null;
 
 function renderFilters() {
   filterRow.innerHTML = "";
@@ -131,6 +148,11 @@ function renderGames() {
     const card = document.createElement("article");
     card.className = "game-card";
     card.style.animationDelay = `${index * 60}ms`;
+    const cta =
+      game.name === "Tic-Tac-Toe"
+        ? '<a class="game-link" href="#playground">Play now</a>'
+        : '<span class="game-link muted">Coming soon</span>';
+
     card.innerHTML = `
       <div class="card-top">
         <span class="genre-badge">${game.genre}</span>
@@ -144,12 +166,81 @@ function renderGames() {
           .map((item) => `<span class="meta-chip">${item}</span>`)
           .join("")}
       </div>
+      <div class="card-action">${cta}</div>
     `;
     gameGrid.appendChild(card);
   });
 }
 
+function getWinningLine() {
+  return (
+    winningLines.find(([a, b, c]) => {
+      return boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c];
+    }) || []
+  );
+}
+
+function updateTttStatus() {
+  if (winner === "draw") {
+    tttStatus.textContent = "Round drawn. Reset and go again.";
+    return;
+  }
+
+  if (winner) {
+    tttStatus.textContent = `Player ${winner} wins the round.`;
+    return;
+  }
+
+  tttStatus.textContent = `Player ${currentPlayer} turn`;
+}
+
+function handleCellClick(index) {
+  if (boardState[index] || winner) {
+    return;
+  }
+
+  boardState[index] = currentPlayer;
+  const winningLine = getWinningLine();
+
+  if (winningLine.length > 0) {
+    winner = currentPlayer;
+  } else if (boardState.every(Boolean)) {
+    winner = "draw";
+  } else {
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+  }
+
+  renderTicTacToe();
+}
+
+function renderTicTacToe() {
+  const winningLine = getWinningLine();
+  tttBoard.innerHTML = "";
+
+  boardState.forEach((cell, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `ttt-cell${winningLine.includes(index) ? " is-winning" : ""}`;
+    button.textContent = cell;
+    button.disabled = Boolean(cell || winner);
+    button.setAttribute("aria-label", `Cell ${index + 1} ${cell || "empty"}`);
+    button.addEventListener("click", () => handleCellClick(index));
+    tttBoard.appendChild(button);
+  });
+
+  updateTttStatus();
+}
+
+function resetTicTacToe() {
+  boardState = Array(9).fill("");
+  currentPlayer = "X";
+  winner = null;
+  renderTicTacToe();
+}
+
 searchInput.addEventListener("input", renderGames);
+tttReset.addEventListener("click", resetTicTacToe);
 
 renderFilters();
 renderGames();
+renderTicTacToe();

@@ -58,7 +58,8 @@ body::before {
 .section-heading,
 .filter-row,
 .game-grid,
-.blueprint-grid {
+.blueprint-grid,
+.play-layout {
   position: relative;
   z-index: 1;
 }
@@ -107,7 +108,9 @@ body::before {
 .panel-card strong,
 .stats-grid strong,
 .game-card h3,
-.blueprint-grid h3 {
+.blueprint-grid h3,
+.play-intro h3,
+.ttt-panel h3 {
   font-family: "Sora", sans-serif;
 }
 
@@ -122,7 +125,10 @@ body::before {
 .stats-grid span,
 .game-card p,
 .blueprint-grid p,
-.ghost-link {
+.ghost-link,
+.play-intro p,
+.ttt-status,
+.game-link.muted {
   color: var(--muted);
 }
 
@@ -140,7 +146,9 @@ body::before {
 .hero-copy,
 .hero-panel,
 .game-card,
-.blueprint-grid article {
+.blueprint-grid article,
+.play-intro,
+.ttt-panel {
   background: var(--panel);
   border: 1px solid var(--line);
   backdrop-filter: blur(14px);
@@ -205,7 +213,8 @@ body::before {
 
 .primary-btn:hover,
 .secondary-btn:hover,
-.filter-btn:hover {
+.filter-btn:hover,
+.game-link:hover {
   transform: translateY(-2px);
 }
 
@@ -226,7 +235,9 @@ body::before {
 .panel-card p,
 .section h2,
 .game-card h3,
-.blueprint-grid h3 {
+.blueprint-grid h3,
+.play-intro h3,
+.ttt-panel h3 {
   margin: 0 0 10px;
 }
 
@@ -301,11 +312,19 @@ input[type="search"] {
   gap: 18px;
 }
 
+.play-layout {
+  display: grid;
+  grid-template-columns: 0.86fr 1.14fr;
+  gap: 18px;
+}
+
 .game-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .game-card {
+  display: flex;
+  flex-direction: column;
   padding: 22px;
 }
 
@@ -343,6 +362,30 @@ input[type="search"] {
   margin-top: 18px;
 }
 
+.card-action {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.game-link {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.game-link:not(.muted) {
+  background: linear-gradient(135deg, rgba(121, 242, 192, 0.24), rgba(111, 183, 255, 0.24));
+}
+
+.game-link.muted {
+  cursor: default;
+}
+
 .empty-state {
   padding: 28px;
   border-radius: 24px;
@@ -356,22 +399,113 @@ input[type="search"] {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.blueprint-grid article {
+.blueprint-grid article,
+.play-intro,
+.ttt-panel {
   padding: 26px;
   border-radius: 28px;
 }
 
+.play-label,
+.ttt-kicker,
 .blueprint-grid span {
-  display: inline-block;
+  display: inline-flex;
   margin-bottom: 14px;
   font-size: 0.84rem;
+}
+
+.blueprint-grid span {
   color: var(--accent-strong);
+}
+
+.play-label,
+.ttt-kicker {
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 159, 110, 0.14);
+  color: var(--accent-strong);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.play-intro p,
+.ttt-status {
+  line-height: 1.7;
+}
+
+.play-rules {
+  margin: 22px 0 0;
+  padding-left: 18px;
+}
+
+.play-rules li + li {
+  margin-top: 10px;
+}
+
+.ttt-panel {
+  background:
+    radial-gradient(circle at top left, rgba(121, 242, 192, 0.09), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02)),
+    var(--panel);
+}
+
+.ttt-status-wrap {
+  margin-bottom: 18px;
+}
+
+.ttt-status {
+  margin: 0;
+  min-height: 28px;
+}
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ttt-cell {
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+  color: var(--text);
+  font-family: "Sora", sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.ttt-cell:hover:enabled {
+  transform: translateY(-2px);
+  border-color: rgba(121, 242, 192, 0.44);
+}
+
+.ttt-cell:disabled {
+  cursor: default;
+}
+
+.ttt-cell.is-winning {
+  color: #08111f;
+  background: linear-gradient(135deg, var(--accent), #e0fff4);
+  border-color: transparent;
+}
+
+.ttt-actions {
+  margin-top: 18px;
+}
+
+.ttt-reset {
+  cursor: pointer;
 }
 
 .game-card,
 .blueprint-grid article,
 .hero-copy,
-.hero-panel {
+.hero-panel,
+.play-intro,
+.ttt-panel {
   animation: rise 700ms ease both;
 }
 
@@ -389,7 +523,8 @@ input[type="search"] {
 @media (max-width: 960px) {
   .hero-content,
   .game-grid,
-  .blueprint-grid {
+  .blueprint-grid,
+  .play-layout {
     grid-template-columns: 1fr;
   }
 }
@@ -409,11 +544,22 @@ input[type="search"] {
   .hero-copy,
   .hero-panel,
   .game-card,
-  .blueprint-grid article {
+  .blueprint-grid article,
+  .play-intro,
+  .ttt-panel {
     border-radius: 24px;
   }
 
   .hero-copy {
     padding: 28px;
+  }
+
+  .play-intro,
+  .ttt-panel {
+    padding: 22px;
+  }
+
+  .ttt-board {
+    gap: 10px;
   }
 }
