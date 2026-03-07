@@ -102,12 +102,48 @@ const filterRow = document.getElementById("filterRow");
 const searchInput = document.getElementById("searchInput");
 const tttBoard = document.getElementById("tttBoard");
 const tttStatus = document.getElementById("tttStatus");
+const tttMode = document.getElementById("tttMode");
 const tttReset = document.getElementById("tttReset");
+const tttResetScores = document.getElementById("tttResetScores");
+const scoreX = document.getElementById("scoreX");
+const scoreO = document.getElementById("scoreO");
+const scoreDraw = document.getElementById("scoreDraw");
 
 let activeFilter = "All";
 let boardState = Array(9).fill("");
 let currentPlayer = "X";
 let winner = null;
+let gameMode = "pvp";
+const scoreKey = "gameify.ttt.scores";
+let scores = loadScores();
+
+function loadScores() {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(scoreKey));
+    if (
+      parsed &&
+      Number.isInteger(parsed.X) &&
+      Number.isInteger(parsed.O) &&
+      Number.isInteger(parsed.draw)
+    ) {
+      return parsed;
+    }
+  } catch (_error) {
+    // Ignore invalid storage values and use defaults.
+  }
+
+  return { X: 0, O: 0, draw: 0 };
+}
+
+function saveScores() {
+  window.localStorage.setItem(scoreKey, JSON.stringify(scores));
+}
+
+function syncScoreboard() {
+  scoreX.textContent = String(scores.X);
+  scoreO.textContent = String(scores.O);
+  scoreDraw.textContent = String(scores.draw);
+}
 
 function renderFilters() {
   filterRow.innerHTML = "";
@@ -187,15 +223,80 @@ function updateTttStatus() {
   }
 
   if (winner) {
-    tttStatus.textContent = `Player ${winner} wins the round.`;
+    const winnerLabel = gameMode === "cpu" && winner === "O" ? "CPU" : `Player ${winner}`;
+    tttStatus.textContent = `${winnerLabel} wins the round.`;
     return;
   }
 
-  tttStatus.textContent = `Player ${currentPlayer} turn`;
+  const turnLabel = gameMode === "cpu" && currentPlayer === "O" ? "CPU turn" : `Player ${currentPlayer} turn`;
+  tttStatus.textContent = turnLabel;
 }
 
-function handleCellClick(index) {
+function getOpenCells() {
+  return boardState
+    .map((value, index) => ({ value, index }))
+    .filter((cell) => !cell.value)
+    .map((cell) => cell.index);
+}
+
+function findLineMove(player) {
+  for (const line of winningLines) {
+    const [a, b, c] = line;
+    const values = [boardState[a], boardState[b], boardState[c]];
+    const marks = values.filter((value) => value === player).length;
+    const empties = line.filter((idx) => !boardState[idx]);
+    if (marks === 2 && empties.length === 1) {
+      return empties[0];
+    }
+  }
+
+  return -1;
+}
+
+function pickCpuMove() {
+  const winningMove = findLineMove("O");
+  if (winningMove >= 0) {
+    return winningMove;
+  }
+
+  const blockMove = findLineMove("X");
+  if (blockMove >= 0) {
+    return blockMove;
+  }
+
+  if (!boardState[4]) {
+    return 4;
+  }
+
+  const openCells = getOpenCells();
+  const corners = [0, 2, 6, 8].filter((idx) => openCells.includes(idx));
+  if (corners.length > 0) {
+    return corners[Math.floor(Math.random() * corners.length)];
+  }
+
+  return openCells[Math.floor(Math.random() * openCells.length)];
+}
+
+function queueCpuTurn() {
+  if (gameMode !== "cpu" || currentPlayer !== "O" || winner) {
+    return;
+  }
+
+  window.setTimeout(() => {
+    if (gameMode !== "cpu" || currentPlayer !== "O" || winner) {
+      return;
+    }
+
+    handleCellClick(pickCpuMove(), true);
+  }, 260);
+}
+
+function handleCellClick(index, fromCpu = false) {
   if (boardState[index] || winner) {
+    return;
+  }
+
+  if (gameMode === "cpu" && currentPlayer === "O" && !fromCpu) {
     return;
   }
 
@@ -204,13 +305,18 @@ function handleCellClick(index) {
 
   if (winningLine.length > 0) {
     winner = currentPlayer;
+    scores[currentPlayer] += 1;
+    saveScores();
   } else if (boardState.every(Boolean)) {
     winner = "draw";
+    scores.draw += 1;
+    saveScores();
   } else {
     currentPlayer = currentPlayer === "X" ? "O" : "X";
   }
 
   renderTicTacToe();
+  queueCpuTurn();
 }
 
 function renderTicTacToe() {
@@ -222,13 +328,14 @@ function renderTicTacToe() {
     button.type = "button";
     button.className = `ttt-cell${winningLine.includes(index) ? " is-winning" : ""}`;
     button.textContent = cell;
-    button.disabled = Boolean(cell || winner);
+    button.disabled = Boolean(cell || winner || (gameMode === "cpu" && currentPlayer === "O"));
     button.setAttribute("aria-label", `Cell ${index + 1} ${cell || "empty"}`);
     button.addEventListener("click", () => handleCellClick(index));
     tttBoard.appendChild(button);
   });
 
   updateTttStatus();
+  syncScoreboard();
 }
 
 function resetTicTacToe() {
@@ -236,10 +343,22 @@ function resetTicTacToe() {
   currentPlayer = "X";
   winner = null;
   renderTicTacToe();
+  queueCpuTurn();
+}
+
+function resetScores() {
+  scores = { X: 0, O: 0, draw: 0 };
+  saveScores();
+  syncScoreboard();
 }
 
 searchInput.addEventListener("input", renderGames);
 tttReset.addEventListener("click", resetTicTacToe);
+tttResetScores.addEventListener("click", resetScores);
+tttMode.addEventListener("change", () => {
+  gameMode = tttMode.value;
+  resetTicTacToe();
+});
 
 renderFilters();
 renderGames();

@@ -59,7 +59,8 @@ body::before {
 .filter-row,
 .game-grid,
 .blueprint-grid,
-.play-layout {
+.play-layout,
+.memory-layout {
   position: relative;
   z-index: 1;
 }
@@ -148,7 +149,8 @@ body::before {
 .game-card,
 .blueprint-grid article,
 .play-intro,
-.ttt-panel {
+.ttt-panel,
+.memory-panel {
   background: var(--panel);
   border: 1px solid var(--line);
   backdrop-filter: blur(14px);
@@ -401,7 +403,8 @@ input[type="search"] {
 
 .blueprint-grid article,
 .play-intro,
-.ttt-panel {
+.ttt-panel,
+.memory-panel {
   padding: 26px;
   border-radius: 28px;
 }
@@ -449,6 +452,94 @@ input[type="search"] {
     var(--panel);
 }
 
+.memory-layout {
+  margin-top: 18px;
+}
+
+.memory-panel {
+  background:
+    radial-gradient(circle at top right, rgba(255, 159, 110, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02)),
+    var(--panel);
+}
+
+.memory-head h3,
+.memory-status {
+  margin: 0;
+}
+
+.memory-status {
+  color: var(--muted);
+  min-height: 28px;
+  margin-top: 8px;
+}
+
+.memory-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.memory-stat {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.memory-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+
+.memory-stat strong {
+  font-family: "Sora", sans-serif;
+  font-size: 1.25rem;
+}
+
+.memory-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, rgba(121, 242, 192, 0.24), rgba(111, 183, 255, 0.24));
+  color: transparent;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.memory-card:hover:enabled {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.memory-card.is-flipped,
+.memory-card.is-matched {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.memory-card.is-matched {
+  border-color: rgba(121, 242, 192, 0.5);
+}
+
+.memory-card:disabled {
+  cursor: default;
+}
+
+.memory-actions {
+  margin-top: 16px;
+}
+
 .ttt-status-wrap {
   margin-bottom: 18px;
 }
@@ -456,6 +547,53 @@ input[type="search"] {
 .ttt-status {
   margin: 0;
   min-height: 28px;
+}
+
+.ttt-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ttt-mode-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.ttt-mode-select {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 8px 14px;
+  font: inherit;
+}
+
+.ttt-scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ttt-score-item {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ttt-score-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+
+.ttt-score-item strong {
+  font-family: "Sora", sans-serif;
+  font-size: 1.25rem;
 }
 
 .ttt-board {
@@ -493,6 +631,9 @@ input[type="search"] {
 }
 
 .ttt-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
   margin-top: 18px;
 }
 
@@ -505,7 +646,8 @@ input[type="search"] {
 .hero-copy,
 .hero-panel,
 .play-intro,
-.ttt-panel {
+.ttt-panel,
+.memory-panel {
   animation: rise 700ms ease both;
 }
 
@@ -524,7 +666,8 @@ input[type="search"] {
   .hero-content,
   .game-grid,
   .blueprint-grid,
-  .play-layout {
+  .play-layout,
+  .memory-meta {
     grid-template-columns: 1fr;
   }
 }
@@ -546,7 +689,8 @@ input[type="search"] {
   .game-card,
   .blueprint-grid article,
   .play-intro,
-  .ttt-panel {
+  .ttt-panel,
+  .memory-panel {
     border-radius: 24px;
   }
 
@@ -555,11 +699,20 @@ input[type="search"] {
   }
 
   .play-intro,
-  .ttt-panel {
+  .ttt-panel,
+  .memory-panel {
     padding: 22px;
   }
 
   .ttt-board {
     gap: 10px;
+  }
+
+  .ttt-scoreboard {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

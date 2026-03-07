@@ -85,21 +85,21 @@
           <div class="section-heading compact">
             <div>
               <p class="eyebrow">Playground</p>
-              <h2>Start with Tic-Tac-Toe</h2>
+              <h2>Play Tic-Tac-Toe and Memory Match</h2>
             </div>
           </div>
           <div class="play-layout">
             <article class="play-intro">
-              <span class="play-label">First playable game</span>
-              <h3>Classic rules, sharper presentation.</h3>
+              <span class="play-label">Playable game set</span>
+              <h3>Two quick games, one polished playground.</h3>
               <p>
-                Two players alternate turns on the same screen. The first player to make
-                three in a row wins. If the board fills up, the round ends in a draw.
+                Tic-Tac-Toe supports local versus and CPU mode, while Memory Match challenges
+                you to clear all card pairs with as few moves as possible.
               </p>
               <ul class="play-rules">
-                <li>Player X starts each new round.</li>
-                <li>Click any empty tile to place your mark.</li>
-                <li>Use reset to start a fresh match instantly.</li>
+                <li>Tic-Tac-Toe starts with player X each round.</li>
+                <li>Memory Match reveals two cards per turn.</li>
+                <li>Reset controls let you restart instantly.</li>
               </ul>
             </article>
 
@@ -109,11 +109,62 @@
                 <h3>Tic-Tac-Toe</h3>
                 <p class="ttt-status" id="tttStatus">Player X turn</p>
               </div>
+              <div class="ttt-meta">
+                <label class="ttt-mode-label" for="tttMode">Mode</label>
+                <select id="tttMode" class="ttt-mode-select" aria-label="Tic-Tac-Toe mode">
+                  <option value="pvp">Player vs Player</option>
+                  <option value="cpu">Player vs CPU</option>
+                </select>
+              </div>
+              <div class="ttt-scoreboard" aria-label="Tic-Tac-Toe scoreboard">
+                <div class="ttt-score-item">
+                  <span>Player X</span>
+                  <strong id="scoreX">0</strong>
+                </div>
+                <div class="ttt-score-item">
+                  <span>Player O</span>
+                  <strong id="scoreO">0</strong>
+                </div>
+                <div class="ttt-score-item">
+                  <span>Draws</span>
+                  <strong id="scoreDraw">0</strong>
+                </div>
+              </div>
               <div class="ttt-board" id="tttBoard" aria-label="Tic-Tac-Toe board"></div>
               <div class="ttt-actions">
                 <button class="primary-btn ttt-reset" id="tttReset" type="button">
                   Reset game
                 </button>
+                <button class="secondary-btn ttt-reset-scores" id="tttResetScores" type="button">
+                  Reset scores
+                </button>
+              </div>
+            </article>
+          </div>
+          <div class="memory-layout">
+            <article class="memory-panel">
+              <div class="memory-head">
+                <p class="ttt-kicker">Now playing</p>
+                <h3>Memory Match</h3>
+                <p class="memory-status" id="memoryStatus">Find all pairs.</p>
+              </div>
+              <div class="memory-meta">
+                <div class="memory-stat">
+                  <span>Moves</span>
+                  <strong id="memoryMoves">0</strong>
+                </div>
+                <div class="memory-stat">
+                  <span>Pairs left</span>
+                  <strong id="memoryPairsLeft">6</strong>
+                </div>
+                <div class="memory-stat">
+                  <span>Best</span>
+                  <strong id="memoryBest">-</strong>
+                </div>
+              </div>
+              <div class="memory-board" id="memoryBoard" aria-label="Memory Match board"></div>
+              <div class="memory-actions">
+                <button class="primary-btn" id="memoryReset" type="button">Shuffle and reset</button>
               </div>
             </article>
           </div>
