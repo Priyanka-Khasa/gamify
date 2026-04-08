@@ -4,7 +4,7 @@ Gameify is a polished game collection website built with Node.js and Express. It
 
 ## Features
 
-- Bold landing page with a modern game-focused visual style
+- Bold landing page with a modern game-focused visual style and then it is very beautiful
 - Searchable game catalog
 - Genre filter buttons
 - Responsive layout for desktop and mobile
